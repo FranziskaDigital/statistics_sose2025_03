@@ -1,0 +1,374 @@
+---
+title: "Übung Modul 6"
+subtitle: "Grundlagen der quantitativen Analyse und Visualisierung digitaler Information <br></br> 28. Mai 2025"
+format: 
+  revealjs:
+    theme: default
+    slide-number: true
+execute:
+  echo: true
+  enabled: true
+footer: |
+      **Dr. Franziska Klemstein** | © 2025 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+output-dir: docs
+---
+
+# {.smaller}
+<h1 style="font-size:2.0em">Deskriptive Statistik:<br>Mittelwerte und Streuung</h1>
+<br>
+
+# {.smaller} 
+<h1 style="font-size:2.0em">Mittelwerte</h1>
+
+|Name|Formel / Beschreibung|Typische Verwendung|
+|----|---------------------|-------------------|
+|Arithmetisches Mittel| $\bar{x} = \frac{1}{n} \sum x_i$| Durchschnittsberechnung (Temperaturen, Noten etc.)|
+|Median|Zentraler Wert, wenn Daten der Größe nach sortiert sind|Robuster Lagewert, also ein Wert, der nicht durch Ausreißer oder extrem ungleiche Verteilungen verzerrt wird|
+|Modus|Häufigster Wert|wenn arithmetisches Mittel oder Median wenig sinnvoll oder nicht definiert sind|
+
+## {.smaller} 
+<h1 style="font-size:2.0em">Arithmetisches Mittel</h1>
+* Das arithmetische Mittel ist eine Kennzahl für die zentrale Tendenz eines Datensatzes. Er gibt an, wo der „Schwerpunkt“ der Daten liegt.
+
+* Formel: $\bar{x} = \frac{1}{n} \sum x_i$. <br>Dabei ist $n$ die Anzahl der Beobachtungen und $x_i$ der $i$-te Messwert.
+
+* Beispiel: 5 Studierende haben in der Klausur folgende Punktzahlen erzielt: $x = [25,20,30,15,18]$<br>Anzahl der Werte (n): $n = 5$<br>Summe der Werte: $\sum_{i=1}^{5} x_i = 25 + 20 + 30 + 15+ 18 = 108$ <br>Arithmetisches Mittel: $\bar{x} = \frac{1}{5} (25 + 20 + 30 + 15+ 18) = \frac{108}{5} = 21{,}6$
+
+## {.smaller}
+<h1 style="font-size:2.0em">Median</h1>
+
+* Der Median ist der Wert, der in der Mitte eines geordneten Datensatzes liegt. Er teilt die Daten in zwei Hälften: 50 % liegen darunter, 50 % darüber.
+
+* Vorgehen: Werte der Größe nach sortieren, dann den mittleren Wert bestimmen.<br>Bei ungerader Anzahl: mittlerer Wert.<br>Bei gerader Anzahl: Durchschnitt der zwei mittleren Werte.
+
+* Beispiel: 5 Studierende haben folgende Punktzahlen erzielt:<br> $x = [25,20,30,15,18]$ <br>Sortierte Werte: $[15, 18, 20, 25, 30]$  <br>Anzahl der Werte: $n = 5$ (ungerade)  → Der mittlere (3. Wert) ist: $20$ <br>Median: $20$
+
+## {.smaller}
+<h1 style="font-size:2.0em">Modus</h1>
+
+* Der Modus ist der häufigste Wert in einem Datensatz. Er beschreibt den „typischsten“ Wert.
+
+* Ein Datensatz kann eindeutig (ein Modus), mehrgipflig (mehrere Modi) oder amodal (kein Wert doppelt) sein.
+
+* Beispiel: 5 Studierende haben folgende Punktzahlen erzielt:  
+$x = [25,20,30,15,18]$
+
+* Häufigkeiten:  
+    - 25: 1×; 20: 1×; 30: 1×; 15: 1×; 18: 1×
+
+* Kein Wert kommt häufiger vor als die anderen → Der Datensatz ist amodal (kein Modus vorhanden).
+
+## {.smaller}
+<h2 style="font-size:2.0em">Arithmetisches Mittel – Python</h2>
+
+```{python}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 4 
+
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import Counter
+
+daten = [25, 20, 30, 15, 18, 22]
+mittelwert = np.mean(daten)
+
+häufigkeiten = Counter(daten)
+x = list(häufigkeiten.keys())
+y = list(häufigkeiten.values())
+
+plt.figure()
+plt.bar(x, y, color="skyblue", edgecolor="black")
+plt.axvline(mittelwert, color='red', linestyle='dashed', label=f"Mittelwert = {mittelwert:.2f}")
+
+plt.title("Säulendiagramm: Arithmetisches Mittel", fontsize=10)
+plt.xlabel("Punktzahl", fontsize=9)
+plt.ylabel("Häufigkeit", fontsize=9)
+plt.legend(fontsize=8)
+plt.tight_layout()
+plt.show()
+```
+
+
+
+## {.smaller}
+<h2 style="font-size:2.0em">Arithmetisches Mittel – R / RStudio</h2>
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 4
+
+# Daten
+daten <- c(25, 20, 30, 15, 18, 22)
+
+# Mittelwert berechnen
+mittelwert <- mean(daten)
+mittelwert
+```
+
+## {.smaller}  
+
+```{r}
+#| echo: true
+#| code-font-size: 8pt
+# Häufigkeiten zählen
+häufigkeiten <- table(daten)
+
+# Basis-R Säulendiagramm
+barplot(häufigkeiten,
+        col = "skyblue",
+        border = "black",
+        xlab = "Punktzahl",
+        ylab = "Häufigkeit",
+        main = "Säulendiagramm: Arithmetisches Mittel",
+        cex.lab = 0.9,
+        cex.axis = 0.8,
+        cex.main = 1.0,
+        ylim = c(0, max(häufigkeiten) + 1),
+        las = 1)
+
+# Mittelwert als vertikale gestrichelte Linie hinzufügen
+pos <- which.min(abs(as.numeric(names(häufigkeiten)) - mittelwert)) + 0.5
+abline(v = pos, col = "red", lty = 2)
+
+# Mittelwert-Label oberhalb der Linie
+text(x = pos, y = max(häufigkeiten) + 0.5,
+     labels = paste0("Mittelwert = ", round(mittelwert, 2)),
+     col = "red", pos = 3, cex = 0.8)
+
+```
+
+## {.smaller}
+<h2 style="font-size:2.0em">Median – Python</h2>
+
+```{python}
+gehälter = [2000, 2100, 2200, 2300, 2400, 10000]
+median = np.median(gehälter)
+
+plt.boxplot(gehälter, vert=False)
+plt.title(f"Boxplot: Median = {median}")
+plt.show()
+```
+
+## {.smaller}
+<h2 style="font-size:2.0em">Median – R</h2>
+
+```{r}
+gehälter <- c(2000, 2100, 2200, 2300, 2400, 10000)
+median_wert <- median(gehälter)
+
+boxplot(gehälter, horizontal=TRUE, main=paste("Boxplot: Median =", median_wert))
+```
+
+## {.smaller}
+<h2 style="font-size:2.0em">Modus – Python</h2>
+
+```{python}
+from statistics import multimode
+
+größen = [39, 40, 40, 41, 42, 42, 42, 43]
+modi = multimode(größen)
+
+plt.hist(größen, bins=range(38, 45), edgecolor='black')
+for m in modi:
+    plt.axvline(m, color='green', linestyle='dashed', label=f"Modus = {m}")
+plt.title("Histogramm: Modus")
+plt.legend()
+plt.show()
+
+```
+
+## {.smaller}
+<h2 style="font-size:2.0em">Modus – R</h2>
+```{r}
+größen <- c(39, 40, 40, 41, 42, 42, 42, 43)
+modus <- names(sort(table(größen), decreasing=TRUE))[1]
+
+hist(größen, breaks=seq(38.5, 43.5, 1), col="lightgreen", main=paste("Histogramm: Modus =", modus))
+abline(v=as.numeric(modus), col="darkgreen", lty=2)
+```
+
+# {.smaller} 
+<h1 style="font-size:2.0em">Streuung</h1>
+
+* gängigste Streuungsmaße für metrische Variablen: Varianz und Standardabweichung
+* **Standardabweichung** gibt die Streubreite einer Variable um deren Mittelwert an, d.h. sie ist die mittlere Abweichung von allen gemessenen Werten von dem Mittelwert
+* Die **Varianz** beschreibt die quadrierte durchschnittliche Entfernung vom Mittelwert
+* Die Varianz ist die **quadrierte Standardabweichung** und die **Standardabweichung** ist die **Wurzel** der Varianz.
+
+
+## {.smaller}
+<h2 style="font-size:2.0em">Varianz und Standardabweichung – Python</h2>
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+groessen = np.array([160, 165, 170, 175, 180, 185])
+mean = np.mean(groessen)
+
+# Varianz (mit ddof=1 für Stichprobenvarianz)
+variance = np.var(groessen, ddof=1)
+
+# Standardabweichung
+std_dev = np.sqrt(variance)
+
+print(f"Mittelwert: {mean}")
+print(f"Varianz: {variance}")
+print(f"Standardabweichung: {std_dev}")
+
+# Visualisierung
+plt.figure(figsize=(8,5))
+plt.plot(groessen, 'o-', label='Körpergrößen')
+plt.axhline(mean, color='green', linestyle='--', label='Mittelwert')
+plt.fill_between(range(len(groessen)), mean - std_dev, mean + std_dev, color='green', alpha=0.2, label='±1 Standardabweichung')
+plt.title('Körpergrößen und Streuung')
+plt.xlabel('Person')
+plt.ylabel('Größe (cm)')
+plt.legend()
+plt.show()
+
+```
+
+## {.smaller}
+<h2 style="font-size:2.0em">Varianz und Standardabweichung – R</h2>
+
+```{r}
+groessen <- c(160, 165, 170, 175, 180, 185)
+mean_val <- mean(groessen)
+
+# Varianz
+variance <- var(groessen)
+
+# Standardabweichung
+std_dev <- sd(groessen)
+
+cat("Mittelwert:", mean_val, "\n")
+cat("Varianz:", variance, "\n")
+cat("Standardabweichung:", std_dev, "\n")
+
+# Visualisierung
+library(ggplot2)
+
+df <- data.frame(Person = 1:length(groessen), Größe = groessen)
+
+ggplot(df, aes(x=Person, y=Größe)) +
+  geom_point() + geom_line() +
+  geom_hline(yintercept=mean_val, linetype="dashed", color="green") +
+  geom_ribbon(aes(ymin=mean_val - std_dev, ymax=mean_val + std_dev), fill="green", alpha=0.2) +
+  labs(title="Körpergrößen und Streuung", y="Größe (cm)", x="Person")
+
+```
+
+## {.smaller}
+<h2 style="font-size:2.0em">Unterscheidung von Streuungen</h2>
+
+* **kleine Streuung:** Werte liegen dicht beieinander, Daten sind relativ homogen
+* **mittlere Streuung:** Werte haben eine moderate Variation, Unterschiede zwischen den Daten sind sichtbar, aber nicht extrem
+* **große Streuung:** Werte sind sehr unterschiedlich, Daten sind heterogen oder stark verteilt
+* Für den Vergleich von Streuungen – insbesondere bei unterschiedlichen Einheiten – wird der **Variationskoeffizient** berechnet: $VK = \frac{Standardabweichung}{Mittelwert}$
+
+# {.smaller}
+<h1 style="font-size:2.0em">Deskriptive Statistik:<br>Stichprobe und Grundgesamtheit</h1>
+<br>
+
+## {.smaller}
+<h2 style="font-size:2.0em">Begriffe</h2>
+* Die **Grundgesamtheit** ist die Gesamtheit aller Elemente, über die eine Aussage getroffen werden soll. Sie umfasst alle Objekte, Personen, Ereignisse, die für eine statistische Untersuchung relevant sind
+* Die **Stichprobe** ist eine **Teilmenge** der Grundgesamtheit, die ausgewählt wird, um **Rückschlüsse** auf die Grundgesamtheit zu ziehen. Da es oft unmöglich oder zu teuer ist, die gesamte Grundgesamtheit zu untersuchen, wird oft mit Stichproben gearbeitet
+
+## {.smaller}
+<h2 style="font-size:2.0em">Statistische Konzepte</h2>
+* **Stichprobenverzerrung:** Eine Stichprobe sollte repräsentativ für die Grundgesamtheit sein; verschiedene Verfahren können zu unterschiedlichen Ergebnissen führen: Einfache Zufallsstichprobe, Geschichtete Stichprobe; Clusterstichprobe
+* **Zentraler Grenzwertsatz:** Bei ausreichend großen Stichproben ist die Stichprobenverteilung des Mittelwertes annähernd normalverteilt, unabhängig von der Verteilung der Grundgesamtheit
+* Der **Standardfehler** gibt an, wie stark die Stichprobenmittelwerte um den wahren Grundgesamtheitsmittelwert streuen. Je größer die Stichprobe, desto kleiner der Standardfehler 
+* **Konfidenzintervalle:** Ein 95%-Konfidenzintervall bedeutet, dass bei wiederholter Stichprobenziehung 95% der berechneten Intervalle den wahren Grundgesamtheitsparameter enthalten würden.
+
+## ## {.smaller}
+<h2 style="font-size:2.0em">Stichproben – Python</h2>
+* Haushaltseinkommen einer Stadt, Fokus: verschiedene Stichprobengrößen
+* Grundgesamtheit:<br> 
+50.000 Haushalte<br>
+Mittleres Einkommen: 3.500€<br>
+Standardabweichung: 800€<br>
+* Ergebnis:<br> Einfluss der Stichprobengröße auf die Schätzgenauigkeit<br>
+Wahrer Mittelwert der Grundgesamtheit: 3801.40€
+
+|    n    |   Schätzung         |   Standardfehler        |  Abweichung        |
+|---------|---------------------|-------------------------|--------------------|
+|  10 | 3860.65€ |  543.10€ | 59.25€ |
+|  50 | 3777.09€ |  211.67€ |  24.31€ |
+| 200 |  3812.44€ |  117.64€ | 11.05€ |
+|1000 | 3806.57€ |  52.50€ |  5.17€ |
+
+## ## {.smaller}
+
+<img src="img/Stichproben_Grundgesamtheit.png">
+
+
+
+## ## {.smaller}
+<h2 style="font-size:2.0em">Stichproben – R</h2>
+* Wartezeiten in einer Arztpraxis, Fokus: Stichprobenvariabilität und Verteilung 
+<img src="img/Stichproben_RStudio.png">
+
+# {.smaller}
+<h1 style="font-size:2.0em">Schließende Statistik/Inferenzstatistik:<br>Hypothesentesten</h1>
+<br>
+
+## {.smaller}
+<h2 style="font-size:2.0em">Begriffe und Konzepte</h2>
+* Es weden zwei konkurrierende Hypothesen formuliert:
+  * **Nullhypothese (H0):** Die „Status Quo“-Annahme, die wir zu widerlegen versuchen
+  * **Alternativhypothese (H1):** Die Gegenhypothese, die wir beweisen möchten
+
+* **Teststatistik:** Ein aus den Stichprobendaten berechneter Wert, der die Grundlage für die Entscheidung bildet.
+* **Signifikanzniveau (α):** Die Wahrscheinlichkeit, mit der wir bereit sind, die Nullhypothese fälschlicherweise zu verwerfen (meist 0,05 oder 5%).
+* **p-Wert:** Die Wahrscheinlichkeit, unter der Annahme der Nullhypothese ein mindestens so extremes Ergebnis zu beobachten.
+* **Fehlerarten:** <br>Typ-I-Fehler: Nullhypothese wird fälschlicherweise verworfen (α-Fehler)<br>Typ-II-Fehler: Nullhypothese wird fälschlicherweise beibehalten (β-Fehler)<br>
+
+## {.smaller}
+<h2 style="font-size:2.0em">Ablauf Hypothesentesten</h2>
+<ol>
+<li>Hypothesen formulieren (H₀ und H₁)</li>
+<li>Signifikanzniveau festlegen</li>
+<li>Teststatistik berechnen</li>
+<li>p-Wert bestimmen oder kritischen Bereich definieren</li>
+<li>Entscheidung treffen: H₀ verwerfen oder beibehalten</li>
+<li>Ergebnis interpretieren</li>
+</ol>
+
+## {.smaller}
+<h2 style="font-size:2.0em">Hypothesentesten – Python</h2>
+
+
+1. HYPOTHESEN:<br>
+   H₀: μ = 175 (Männer sind im Schnitt 175cm groß)<br>
+   H₁: μ ≠ 175 (Männer sind NICHT 175cm groß)
+
+2. DATEN:<br>
+   Anzahl Messungen: 30<br>
+   Stichproben-Mittelwert: 176.49 cm<br>
+   Standardabweichung: 7.20 cm<br>
+   Erste 5 Werte: [182.  176.9 183.2 190.2 176.1]
+
+3. TESTSTATISTIKEN:<br>
+   t-Statistik: 1.137<br>
+   p-Wert: 0.2648
+
+4. ENTSCHEIDUNG:<br>
+   Signifikanzniveau: 0.05<br>
+   ❌ p-Wert (0.2648) ≥ 0.05<br>
+   → ERGEBNIS: Nullhypothese BEIBEHALTEN<br>
+   → Wir können nicht beweisen, dass sie nicht 175cm sind
+
+## {.smaller}
+<h2 style="font-size:2.0em">Hypothesentesten – Python</h2>
+
+<img src="img/Hypothesen_Python.png">
+
+## {.smaller}
+<h2 style="font-size:2.0em">Hypothesentesten – R</h2>
+
+<img src="img/Hypothesentesten_R.png">

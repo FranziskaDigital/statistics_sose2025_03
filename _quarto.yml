@@ -1,0 +1,11 @@
+project:
+  type: website
+  output-dir: docs
+
+format:
+  revealjs: 
+    theme: solarized
+    transition: slide
+    slide-number: true
+    toc: false
+    
